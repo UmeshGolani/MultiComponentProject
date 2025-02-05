@@ -2,8 +2,13 @@
 import React from 'react';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+
+
+  const navigate = useNavigate();
+
   const responseGoogle = async (response) => {
     console.log(response); // Log user information
     // Extract user details from the response
@@ -18,7 +23,8 @@ const Login = () => {
     // Store user details in local storage
     localStorage.setItem('userDetails', JSON.stringify(userDetails));
     // Handle Google sign-in response
-    alert(`${userDetails.name} Welcome`);
+    navigate('/dashboard');
+    
   };
 
   return (
