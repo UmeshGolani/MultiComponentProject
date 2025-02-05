@@ -8,14 +8,13 @@ const App = () => {
   const { user } = useAuth();
 
   return (
-    <Dashboard/>
-    // <Router>
-    //   <Routes>
-    //     <Route path="/login" element={<Login />} />
-    //     <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/login" />} />
-    //     <Route path="/" element={<Navigate to={user ? "/dashboard" : "/login"} />} />
-    //   </Routes>
-    // </Router>
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/login" />} />
+        <Route path="/" element={<Navigate to={user ? "/dashboard" : "/login"} />} />
+      </Routes>
+    </Router>
   );
 };
 
