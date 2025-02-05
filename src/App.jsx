@@ -1,20 +1,22 @@
-import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import { createTheme } from '@mui/material/styles';
-import RichTextEditor from './Components/RichTextEditor';
-import MovingCounter from './Components/Counter';
-import Login from './Components/GoogleLogin';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import Dashboard from "./Components/Dashboard";
+import Login from "./components/GoogleLogin";
+import { useAuth } from "./context/AuthContext";
 
-const theme = createTheme();
+const App = () => {
+  const { user } = useAuth();
 
-const App =() => {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      {/* <RichTextEditor/>
-      <MovingCounter/> */}
-      <Login/>
-    </ThemeProvider>
+    <Dashboard/>
+    // <Router>
+    //   <Routes>
+    //     <Route path="/login" element={<Login />} />
+    //     <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/login" />} />
+    //     <Route path="/" element={<Navigate to={user ? "/dashboard" : "/login"} />} />
+    //   </Routes>
+    // </Router>
   );
-}
+};
+
 export default App;

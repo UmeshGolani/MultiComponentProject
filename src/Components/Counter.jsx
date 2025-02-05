@@ -23,18 +23,24 @@ export default function MovingCounter() {
     x: 0,
     y: containerSize.height - 100,
   });
-
   const [count, setCount] = useState(0);
+  const [bgColor, setBgColor] = useState("#f0f0f0");
+
+  const getNextColor = () => {
+    const colors = ["#f0f0f0", "#ffcccc", "#ccffcc", "#ccccff", "#ffffcc"];
+    return colors[count % colors.length];
+  };
 
   const handleIncrement = () => {
     setCount((prev) => prev + 1);
+    setBgColor(getNextColor());
 
     setPosition((prev) => {
       const nextX = Math.min(prev.x + step, containerSize.width - 100);
-      const halfWidth = containerSize.width / 2;
+      const progress = nextX / containerSize.width; // Progress from 0 to 1
 
-      let nextY = prev.y;
-      if (nextX < halfWidth) {
+      let nextY;
+      if (progress % 0.2 < 0.1) {
         nextY = Math.max(prev.y - step, 0); // Move Up
       } else {
         nextY = Math.min(prev.y + step, containerSize.height - 100); // Move Down
@@ -46,13 +52,14 @@ export default function MovingCounter() {
 
   const handleDecrement = () => {
     setCount((prev) => Math.max(prev - 1, 0));
+    setBgColor(getNextColor());
 
     setPosition((prev) => {
       const nextX = Math.max(prev.x - step, 0);
-      const halfWidth = containerSize.width / 2;
+      const progress = nextX / containerSize.width;
 
-      let nextY = prev.y;
-      if (nextX < halfWidth) {
+      let nextY;
+      if (progress % 0.2 < 0.1) {
         nextY = Math.min(prev.y + step, containerSize.height - 100); // Move Down
       } else {
         nextY = Math.max(prev.y - step, 0); // Move Up
@@ -66,18 +73,19 @@ export default function MovingCounter() {
     <Container
       maxWidth={false}
       sx={{
-        width: "100vh",
+        width: "100vw",
         height: "100vh",
         position: "relative",
-        backgroundColor: "#f0f0f0",
+        backgroundColor: bgColor,
         border: "2px solid black",
         overflow: "hidden",
+        transition: "background-color 0.5s ease",
       }}
     >
       {/* Motion Counter */}
       <motion.div
         animate={{ x: position.x, y: position.y }}
-        transition={{ type: "tween", ease: "easeInOut", duration: 0.1 }}
+        transition={{ type: "tween", ease: "easeInOut", duration: 0.5 }}
         style={{ position: "absolute" }}
       >
         <Typography
@@ -103,6 +111,7 @@ export default function MovingCounter() {
           top: "50%",
           display: "flex",
           gap: 2,
+          transform: "translate(-50%, -50%)",
         }}
       >
         <Button variant="contained" color="error" onClick={handleDecrement}>
